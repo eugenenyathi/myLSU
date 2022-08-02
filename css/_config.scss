@@ -1,0 +1,98 @@
+$focus-blue: #5887ef;
+$main-clr: #f96816;
+
+$grey-eee: #eeeeee;
+$grey-e6: #e6e6e6;
+$grey-ccc: #cccccc;
+$grey-ddd: #dddddd;
+$grey-aaa: #aaaaaa;
+$grey-bfbf: #bfbfbf;
+
+$fb-grey: #efefef;
+$fb-grey-bg: #f0f2f5;
+$fb-grey-2: #898f9c;
+
+$bgColor: #f5f6f8;
+$eye-icon-grey: #7a797e;
+
+$amber: #ffbf00;
+$tangerine: #f28500;
+$burntOrange: #cc5500;
+$main-clr: #f96816;
+$ogRed: red;
+$deepRed: #ab0000;
+
+$ogWhite: #fff;
+$unclear-white: rgba(255, 255, 255, 0.95);
+
+$ogBlack: #000;
+$licorice: #1b1212;
+$black-222: #222;
+$black-333: #333;
+
+$brown: #524500;
+$brown1: #9e8600;
+$hillBlck: #464646;
+$hillGreyish: #898989;
+$hill: #979891;
+
+$focus-blue: #5887ef;
+$mlnBlue: #5996ff;
+$midnightBlue: #191970;
+$thaBlue: #070052;
+
+$purple: #8f49bb;
+
+$youtube: #c4302b;
+$facebook: #3b5998;
+$twitter: #1da1f2;
+
+$fontStack: "Gotham SSm A", "Gotham SSm B", Gotham, "Helvetica Neue", Helvetica,
+  Arial, sans-serif;
+$fontStack2: Helvetica, Arial, sans-serif;
+
+$transition: all 1000ms ease-in-out;
+
+@mixin flexY() {
+  display: flex;
+  flex-direction: column;
+}
+@mixin flexCenter() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flexCenterY() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexSpaceBtw() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flexEnd() {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+@mixin flexAlign() {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flexAlignY() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@mixin crazyFlex() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}

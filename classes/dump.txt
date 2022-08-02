@@ -1,0 +1,149 @@
+//--end of class 
+
+/*
+echo "<pre>";
+  print_r($this->confirmStatus);
+echo "</pre>";
+
+exit("Everything went well!");
+*/
+/*
+foreach($this->confirmStatus as $status){
+  if($status != 1){
+    break;
+  }
+  
+
+    --if the current roomMate accepted the request 
+    -- then allocate room
+    first record granting of the room to the student who 
+    made the initial request
+  
+  
+  
+  
+}
+*/
+
+
+
+// $sql  = " SELECT * FROM roomRequestGrantedMaleHostel 
+//           WHERE roomNumber = $roomNumber AND studentId  = '$studentId' ";
+// $stmt = $this->connect()->query($sql);
+// 
+// if($row = $stmt->fetch(PDO::FETCH_OBJ)){
+//   exit("RoomNumber => ".$row->roomNumber . "" . "Student => ".$studentId);
+// }else{
+//   exit("Zero Records Found!");
+// }
+// 
+// return $stmt;
+
+
+
+$returnValue = 
+$this->allocateRoomModel->setGrantRoom($this->freeRoom(), $this->requestStudentId);
+
+switch($returnValue){
+  case false:
+    exit("Failed to grant requestStudentId a room ". $returnValue);
+    break;  
+  default:
+    break;
+}
+
+
+
+
+if($this->positiveStatus()){
+  /*
+    recording the request that it has been granted!;
+  */
+  $grantRequest = $this->grantRoomRequest();
+  
+  /* 
+    if this went through successfully 
+    then let's give them a room   
+  */
+  
+  switch($grantRequest){
+    case 0:
+      exit("Failed to record request successfully!".$grantRequest);
+      break;  
+    case 1:
+      $this->grantRoom();
+      break;
+    default:
+      break;
+  }
+  
+  /*
+    if everything is okay let's continue giving 
+    them rooms.
+  */
+}
+
+
+
+else{
+  echo "<pre>";
+    print_r($this->countPositiveStatus());
+  echo "</pre>";
+  // echo $this->countPositiveStatus();
+  exit("Nop!.");
+}      
+
+
+
+// echo $this->requestStudentId . "<br>";
+// 
+// echo "<pre>";
+//   print_r($this->requestsStudents);
+// echo "</pre>";
+// 
+// echo "Max per room -> ".$this->maxNoOfRoomMates;
+// exit();
+
+<li class="ls-item">
+  <button class="acc-room-number-icon acc-icons">
+    <i class="fas fa-bed"></i>
+  </button>
+  <p> 
+    Room mates
+    <?php
+      echo '
+        <span> 
+          - <b>'.$noOfRoomMates.'</b>
+        </span>
+      ';
+    ?> 
+  </p>
+</li>
+<li class="ls-item">
+  <button class="acc-room-number-icon acc-icons">
+    <i class="fas fa-bed"></i>
+  </button>
+  <p> 
+    Room Number
+    <?php
+      echo '
+        <span> 
+          <b>'.$roomNo.'</b>
+        </span>
+      ';
+    ?> 
+  </p>
+</li>
+
+
+//checks if the student being searched requested a room before 
+if($this->requestRoomStatus($studentId, )){
+  $takenStudents[] = $studentId;
+}
+//check if the student being searched
+//has confirmation of 1 
+elseif($this->confirmationStatus($studentId, )){
+  
+}
+
+

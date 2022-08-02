@@ -1,0 +1,61 @@
+.center-panel-main-content {
+  .confirm-rm-ms-container {
+    @extend .ctr-rm-ms-container;
+
+    .confirm-rm-ms-heading {
+      @extend .ctr-rm-ms-heading;
+    }
+  }
+
+  .confirm-rm-ms-content {
+    @extend .ctr-rm-ms-content;
+  }
+
+  .confirm-rm-mt {
+    @extend .ctr-rm-mt;
+  }
+
+  .confirm-rm-mt-profile {
+    @extend .ctr-rm-mt-profile;
+
+    .confirm-letter-container {
+      @extend .ctr-letter-container;
+
+      .confirm-letter {
+        @extend .ctr-letter;
+      }
+    }
+
+    .confirm-rm-mt-details {
+      @extend .ctr-rm-mt-details;
+      .confirm-rm-mt-name {
+        @extend .ctr-rm-mt-name;
+      }
+    }
+  }
+
+  .confirm-cancel-btn-container {
+    @include flexAlign;
+    margin-top: 20px;
+
+    .confirm-room-mates,
+    .cancel-room-mates {
+      @extend .ctr-block-btn;
+      margin: 0;
+      margin-right: 10px;
+
+      &:hover {
+        background-color: $twitter;
+      }
+    }
+
+    .cancel-room-mates {
+      margin-right: 0;
+      background-color: $ogRed;
+
+      &:hover {
+        background-color: $ogRed;
+      }
+    }
+  }
+}

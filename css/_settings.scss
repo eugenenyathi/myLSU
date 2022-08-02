@@ -1,0 +1,98 @@
+.settings-container {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: opacity 300ms linear 0s;
+}
+
+.settings-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 480px;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
+  background-color: #fff;
+  transition: color 250ms linear 10ms;
+
+  h2 {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  .settings-pwd-input-wrapper {
+    margin: 10px 0;
+    position: relative;
+
+    label {
+      font-size: 16px;
+      text-transform: capitalize;
+    }
+    .settings-password-input {
+      @extend .input;
+      padding: 9px 11px;
+      font-size: 18px;
+    }
+    .settings-eye-icon {
+      // display: none;
+      @extend .icon;
+      @extend .eye-icon;
+      font-size: 21px;
+      position: absolute;
+      top: 70%;
+      right: 13px;
+      transform: translateY(-50%);
+    }
+    .settings-eye-clear {
+      display: none;
+    }
+  }
+
+  .settings-msg {
+    @extend .msg;
+    animation: opacity linear 400ms 0s;
+  }
+
+  .settings-password-btn {
+    @extend .btn;
+    display: block;
+    width: 100%;
+    margin: 0;
+    margin-top: 20px;
+    padding: 15px 15px;
+    background-color: $main-clr;
+
+    &:hover {
+      background-color: $tangerine;
+    }
+  }
+
+  .close-settings-btn-wrapper {
+    position: absolute;
+    top: 43%;
+    right: -20%;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid #bfbfbf;
+
+    .close-settings-btn {
+      width: 100%;
+      height: 100%;
+      @extend .icon;
+      color: #bfbfbf;
+      font-size: 22px;
+
+      &:hover {
+        color: red;
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+.ctr-rm-ms-container {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.ctr-rm-ms-heading {
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.ctr-rm-ms-content {
+  padding: 20px;
+}
+
+.ctr-rm-mt {
+  @include flexSpaceBtw;
+  padding: 10px 0;
+  border-bottom: 1px solid $grey-e6;
+
+  &:last-child {
+    border: none;
+  }
+}
+
+.ctr-rm-mt-profile {
+  @include flexAlign();
+}
+
+.ctr-letter-container {
+  width: 80px;
+  height: 80px;
+  margin-right: 13px;
+  border-radius: 50%;
+  background-color: $thaBlue;
+  @include flexCenter();
+}
+
+.ctr-letter {
+  color: $ogWhite;
+  font-size: 20px;
+}
+
+.ctr-rm-mt-details {
+  @extend .basic-text;
+  font-size: 17px;
+}
+
+.ctr-rm-mt-name {
+  font-size: 20px;
+}
+
+.ctr-block-btn {
+  @extend .btn;
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-top: 20px;
+  padding: 13px 18px;
+  background-color: $twitter;
+  transition: filter 250ms linear 0s;
+
+  &:hover {
+    background-color: $mlnBlue;
+  }
+}

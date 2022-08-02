@@ -1,0 +1,33 @@
+.center-panel-main-content {
+  .preferred-rm-ms-container {
+    @extend .ctr-rm-ms-container;
+
+    .preferred-rm-ms-heading {
+      @extend .ctr-rm-ms-heading;
+    }
+  }
+
+  .preferred-rm-ms-content {
+    @extend .ctr-rm-ms-content;
+  }
+
+  .preferred-rm-mt {
+    @extend .ctr-rm-mt;
+  }
+
+  .preferred-rm-mt-profile {
+    @extend .ctr-rm-mt-profile;
+
+    .preferred-letter-container {
+      @extend .ctr-letter-container;
+
+      .preferred-letter {
+        @extend .ctr-letter;
+      }
+    }
+
+    .preferred-rm-mt-details {
+      @extend .ctr-rm-mt-details;
+    }
+  }
+}

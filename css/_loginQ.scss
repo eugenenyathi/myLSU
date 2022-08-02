@@ -1,0 +1,54 @@
+@media (max-width: 480px) {
+  body {
+    background-color: #fff;
+  }
+
+  .sign-in-container {
+    width: 100%;
+    height: auto;
+    margin-top: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 18px 15px;
+
+    .logo {
+      margin-bottom: 25px;
+
+      img {
+        width: 240px;
+      }
+    }
+    .sign-in-input {
+      padding: 11px 14px;
+      border-color: $fb-grey-bg;
+      border-radius: 7px;
+      background-color: $fb-grey-bg;
+
+      &:focus {
+        border-color: $grey-eee;
+        background-color: $fb-grey-bg;
+      }
+    }
+    .sign-in-input-wrapper {
+      .eye-icon {
+        font-size: 20px;
+      }
+    }
+
+    .links {
+      margin-top: 15px;
+    }
+
+    .login-btn,
+    .reset-btn {
+      margin-top: 20px;
+      padding: 13px 15px;
+      font-weight: normal;
+      text-transform: uppercase;
+    }
+  }
+
+  .footer {
+    display: none;
+  }
+}

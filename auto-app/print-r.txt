@@ -1,0 +1,5 @@
+
+echo '<pre>';
+print_r($this->studentIds);
+echo '</pre>';
+exit();

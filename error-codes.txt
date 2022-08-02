@@ -1,0 +1,50 @@
+/*
+Error-Codes
+  == insufficient permission ==
+  100 - Insufficient permissions.
+  101 - faculty not allowed to make requests at the time
+  
+  === btn-error ====
+  btn - 700
+  
+  ==== empty-fields ====
+  empty-fields - 800EF
+  student id - 800
+  national id - 801
+  password - 802
+  dob - 803
+
+  ====  length ===
+  length - 990LN
+  student Id -length - 990
+  national Id -length - 991
+  password -length - 992
+  two-password -length 993
+  dob - 994
+
+  request-type - 1000
+  content-type - 1100
+  formatting-error - 1110
+
+  ===== regex  ====
+  regex - 2000RX
+  student id -regex - 2000
+  national id -regex - 2001
+  password -regex - 2002
+
+  ==== match-error ===
+  student id -match-error - 3000
+  national id -match-error - 3001
+  password -match-error - 3002
+
+  ==== mysql-errors ====
+  zero-rows - 4000
+  failed-to-prepare-stmt - 4001
+
+  execution-success - 5000
+  execution-error - 5001
+
+  db-connection-error => 10000
+  
+
+*/

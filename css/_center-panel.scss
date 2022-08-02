@@ -1,0 +1,270 @@
+.center-panel {
+  flex-basis: 48%;
+  padding: 30px;
+  background-color: $ogWhite;
+
+  .reminder {
+    width: 100%;
+    height: 100%;
+    padding-left: 15px;
+    @extend .grey-background;
+    @include flexAlign();
+
+    .reminder-text {
+      @extend .basic-text;
+      font-size: 18px;
+
+      .student-name,
+      .amount-owing {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .ctr-acc-fee-container {
+    @extend .grey-background;
+    padding: 15px;
+    border-color: green;
+    @include flexAlign();
+
+    .ctr-acc-fee-text {
+      @extend .basic-text;
+      font-size: 18px;
+
+      .ctr-acc-fee {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .ctr-password-container {
+    .ctr-password-heading {
+      color: $main-clr;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .ctr-password-content {
+      padding: 20px;
+    }
+
+    .ctr-pwd-input-wrapper {
+      position: relative;
+
+      label {
+        font-size: 16px;
+        text-transform: capitalize;
+      }
+      .ctr-password-input {
+        @extend .input;
+
+        &:focus {
+          border-color: $mlnBlue;
+        }
+      }
+      .ctr-eye-icon {
+        @extend .icon;
+        @extend .eye-icon;
+        font-size: 21px;
+        position: absolute;
+        top: 70%;
+        right: 13px;
+        transform: translateY(-50%);
+      }
+      .ctr-eye-clear {
+        display: none;
+      }
+    }
+
+    .ctr-password-btn {
+      @extend .block-btn;
+      background-color: $twitter;
+
+      &:hover {
+        background-color: $mlnBlue;
+      }
+    }
+
+    .ctr-msg {
+      @extend .msg;
+    }
+  }
+}
+
+.center-panel-main-content {
+  // display: none;
+
+  .search-submit-container {
+    @include flexAlign();
+    margin-top: 30px;
+    width: 100%;
+    height: 50px;
+    padding: 4px 10px;
+    border: 3px solid $licorice;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0px 0px 13px rgba(0, 0, 0, 0.1);
+    background-color: $unclear-white;
+    transition: border-radius 250ms linear 10ms;
+
+    &:focus-within {
+      border-color: $twitter;
+      border-radius: 30px;
+    }
+
+    &:focus-within .ctr-search-icon {
+      color: $black-222;
+    }
+
+    .search-rm-ms-input {
+      display: block;
+      width: 100%;
+      outline: none;
+      border: none;
+      color: $licorice;
+      font-size: 17px;
+      padding: 15px 10px;
+      background-color: transparent;
+    }
+
+    .ctr-search-icon {
+      @extend .icon;
+      color: $grey-ccc;
+      padding: 0 10px;
+      font-size: 18px;
+
+      &:hover {
+        color: $licorice;
+      }
+    }
+  }
+
+  .search-results-container {
+    display: none;
+    width: 100%;
+    margin-bottom: 40px;
+    padding: 20px 23px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  .search-results-container.show-results {
+    display: block;
+  }
+  .search-results-ul-container {
+    .search-rlt-list-item {
+      cursor: pointer;
+      font-size: 17px;
+      padding: 10px 0;
+      // @include flexEnd();
+      border-bottom: 1px solid $grey-e6;
+      transition: transform 250ms linear 0s;
+
+      .mini-st-details {
+        margin-right: auto;
+
+        .search-rlt-st-name,
+        .search-rlt-st-number {
+          @extend .basic-text;
+          font-size: 18px;
+          margin: 0 7px;
+        }
+        .search-rlt-st-name {
+          margin-left: 0;
+        }
+        
+        .search-rlt-st-name.grey{
+          color: $grey-ccc;
+        }
+      }
+
+      .search-rlt-plus-icon {
+        @extend .icon;
+        display: none;
+        color: $ogRed;
+        font-size: 18px;
+      }
+        
+      
+    }
+    
+  }
+
+  .selected-rm-ms-container {
+    display: none;
+    width: 100%;
+    margin-top: 40px;
+
+    .selected-rm-ms-heading {
+      font-size: 20px;
+      font-weight: normal;
+    }
+  }
+
+  .selected-rm-ms-container.show-room-mates {
+    display: block;
+  }
+
+  .selected-rm-ms-content {
+    padding: 20px;
+  }
+
+  .selected-rm-mt {
+    @include flexSpaceBtw;
+    padding: 10px 0;
+    border-bottom: 1px solid $grey-e6;
+    .remove-rm-mate-icon {
+      @extend .icon;
+      color: $ogRed;
+      font-size: 24px;
+    }
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  .selected-rm-mt-profile {
+    @include flexAlign();
+    .letter-container {
+      width: 70px;
+      height: 70px;
+      margin-right: 13px;
+      border-radius: 50%;
+      background-color: $thaBlue;
+      @include flexCenter();
+
+      .selected-letter {
+        color: $ogWhite;
+        font-size: 18px;
+      }
+    }
+
+    .selected-rm-mt-details {
+      @extend .basic-text;
+      font-size: 17px;
+    }
+  }
+
+  .request-room {
+    @extend .btn;
+    display: block;
+    width: 100%;
+    margin: 0;
+    margin-top: 20px;
+    padding: 13px 18px;
+    background-color: $twitter;
+    transition: filter 250ms linear 0s;
+
+    &:hover {
+      background-color: $mlnBlue;
+    }
+  }
+}
+
+.loadView{
+  display: none;
+}
+
+@import "_student-profile-util";
+@import "_preferred-room-mates";
+@import "_confirm-room-mates";
