@@ -17,6 +17,7 @@
   $models = [ new AllocateRoomFM,  new AllocateRoomMM ];
   
   allocateRooms($models);
+  exit("allocate-rooms successful.");
   
   function allocateRooms($models){
     foreach($model as $model){

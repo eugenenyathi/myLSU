@@ -1,12 +1,12 @@
 <?php 
   
-  require_once '../db/db.php';
+  include_once '../db/db.php';
   
   
   class setRoommatesModel extends Db{
     
     protected function getStudentIds($sex){
-      $sql = " SELECT studentId FROM studentDetails WHERE sex = '$sex' LIMIT 10 ";
+      $sql = " SELECT studentId FROM studentDetails WHERE sex = '$sex' LIMIT 40 ";
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetchAll(PDO::FETCH_OBJ);
       

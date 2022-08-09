@@ -1,26 +1,58 @@
 <?php 
 
-  include_once '../models/reset-model.php';
+  include_once '../models/reset-models/reset-model.php';
+  include_once '../interfaces/reset-interface.php';
   
   class ResetContr extends ResetModel{
+    private $resetModel;
     
+    public function __construct(ResetInterface $resetModel){
+      $this->resetModel = $resetModel;
+    }
     
     public function reset(){
       $this->studentLogInDetails();
       $this->studentLogInTimeStamps();
+      $this->requestsTable();
+      $this->requestRoomTable();
+      $this->preferredRoomMates();
       
     }
     
     public function showTables(){
       $this->loopArr($this->showLogInDetails());
       $this->loopArr($this->showLogInTimeStamps());
+      
+      $this->loopArr($this->showRequestsTable());
+      $this->loopArr($this->showRequestRoomTable());
+      $this->loopArr($this->showPreferredRoomMates());
     }
     
-    public function loopArr($arr){
-      foreach($arr as $element){
-          print_r($element);
-      }
+    
+    public function showRequestsTable(){
+      return $this->resetModel->getRequestsTable();
     }
+    
+    public function showRequestRoomTable(){
+      return $this->resetModel->getRequestRoomTable();
+    }
+    
+    public function showPreferredRoomMates(){
+      return $this->resetModel->getPreferredRoomMates();
+    }
+    
+    public function requestsTable(){
+      return $this->resetModel->resetRequestsTable();
+    }
+    
+    public function requestRoomTable(){
+      return $this->resetModel->resetRequestRoomTable();
+    }
+    
+    public function preferredRoomMates(){
+      return $this->resetModel->resetPreferredRoomMates();
+    }
+    
     
     public function showLogInDetails(){
       return $this->getLogInDetails();
@@ -36,6 +68,12 @@
     
     public function studentLogInTimeStamps(){
       return $this->resetLogInTimeStamps();
+    }
+    
+    public function loopArr($arr){
+      foreach($arr as $element){
+          print_r($element);
+      }
     }
     
     

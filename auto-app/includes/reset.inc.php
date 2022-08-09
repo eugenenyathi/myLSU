@@ -8,8 +8,32 @@
   */
   
   include_once '../controllers/reset-contr.php';
+  include_once '../models/reset-models/reset-fm.php';
+  include_once '../models/reset-models/reset-mm.php';
+
+  executionSeq();
   
-  $auto = new ResetContr();
-  $auto->reset();
-  $auto->showTables();
-  exit("5000");
+  
+  function executionSeq(){
+    $gender = ['M'];
+    
+    foreach($gender as $singleSex){
+      switch($singleSex){
+        case 'M':
+          $auto = new ResetContr(new ResetMM);
+          $auto->reset();
+          // $auto->showTables();
+          break;
+        case 'F':
+          $auto = new ResetContr(new ResetFM);
+          $auto->reset();
+          // $auto->showTables();
+          break;
+        default:
+          exit("Gender-selection error");
+      }
+    }
+    
+  }
+  
+  exit("Reset - successful.");

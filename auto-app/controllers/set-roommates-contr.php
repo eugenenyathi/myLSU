@@ -4,26 +4,38 @@
 
   class setRoommatesContr extends setRoommatesModel{
     private $studentIds = [];
+    private $sex;
     // private $studentNationalId;
     
-    public function execute(){
-      $studentIds = $this->studentIds('M');
+    public function __construct($sex){
+      $this->sex = $sex;
+    }
+    
+    public function setUpLogin(){
+      $studentIds = $this->studentIds($this->sex);
+      
+      /*
+        1. Check the logIn-status 
+        1.1. If LogIn-status is not 1 change password 
+        2. Convert the nationalId id to be the custom password 
+        3. Update the Login-status
+      */
 
       foreach($studentIds as $student){
         $studentId = $student->studentId;
         
-        if($this->loginStatus($studentId) === 1){
-          //everything bho
-        }else{
-            
+        //Step 1 & 1.1:
+        if($this->loginStatus($studentId) !== 1){
+          //Step 2:
           //get the nationalId of the student
           $nationalId = $this->nationalId($studentId); 
-          //hased the nationalId type password 
+          //hash the nationalId 
           $hashed_password = password_hash($nationalId, PASSWORD_DEFAULT);
           //finally change the password
           $this->changePassword($studentId, $hashed_password);
-          $this->changeLogInStatus($studentId);         
-        
+          
+          //Step 3:
+          $this->changeLogInStatus($studentId);   
         }
       }
                   // exit("5000");  

@@ -14,6 +14,12 @@ setRoommates.addEventListener('click', (ev) => {
   fetchReq(url);
 })
 
+allocateRooms.addEventListener('click', (ev) => {
+  const url = "../includes/allocate-room.inc.php";
+  fetchReq(url);
+})
+
+
 function fetchReq(url){
   fetch(url)
   .then((res) => res.text())

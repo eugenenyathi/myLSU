@@ -1,6 +1,6 @@
 <?php 
 
-  require_once '../db/db.php';
+  include_once '../db/db.php';
 
   class ResetModel extends Db{
     protected function resetLogInDetails(){

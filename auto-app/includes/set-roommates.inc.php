@@ -9,33 +9,50 @@
   
   */
   
-  /*
   include_once '../controllers/set-roommates-contr.php';
-  
-  $auto = new setRoommatesContr();
-  $auto->execute();
-  $auto->showTables();
-  
-  */
-  
   include_once '../controllers/randomize-mates-contr.php';
   include_once '../models/randomize-models/randomize-mates-fm.php';
   include_once '../models/randomize-models/randomize-mates-mm.php';
   
-  executionSeq();
+  $auto = new setRoommatesContr('M');
+  $auto->setUpLogin();
+  
+  $user = new RandomizeMatesContr(new RandomizeMatesMM, 'M');
+  $user->randomize();
+  
+  // executionSeq();
+  exit("set-roommates successful.");
   
   
   function executionSeq(){
-    $gender = [ 'M'];
+    $gender = [ 'M', 'F'];
     
     foreach($gender as $singleSex){
       switch($singleSex){
         case 'M':
+          $auto = new setRoommatesContr('M');
+          $auto->setUpLogin();
+          // $auto->showTables();
+          echo "setUpLogin successful. -M";
+          
           $user = new RandomizeMatesContr(new RandomizeMatesMM, 'M');
           $user->randomize();
-        case 'F':
-          $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
-          $user->randomize();
+          // $user->showTables();
+          
+          echo "randomize successful. -M";
+          exit("exit!");
+          break;
+       case 'F':
+          $auto = new setRoommatesContr('F');
+          $auto->setUpLogin();
+          // $auto->showTables();
+          echo "execution successful. -F";
+          exit("exit!");
+        
+          // $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
+          // $user->randomize();
+          // $user->showTables();
+          break;
         default:
           exit("Gender-selection error");
       }
