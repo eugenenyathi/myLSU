@@ -14,11 +14,12 @@
   include_once '../models/randomize-models/randomize-mates-fm.php';
   include_once '../models/randomize-models/randomize-mates-mm.php';
   
-  $auto = new setRoommatesContr('M');
-  $auto->setUpLogin();
+  // $auto = new setRoommatesContr('M');
+  // $auto->setUpLogin();
   
   $user = new RandomizeMatesContr(new RandomizeMatesMM, 'M');
-  $user->randomize();
+  // $user->randomize();
+  $user->seqDriver();
   
   // executionSeq();
   exit("set-roommates successful.");

@@ -15,9 +15,25 @@
       $this->sex = $sex;
     }
     
-    public function randomize(){
+    public function seqDriver(){
+      define("levels", [1.2, 2.1, 2.2, 4.1, 4.2]);
+      define("facultyCodes", ["AgriSciences", "Engineering", "Humanities"]);
+      
+      $matchingStudentIds = [];
+      
+      foreach(levels as $key => $level){
+        // $matchingStudentIds = $this->getLevelStudents($level, facultyCodes[$key]);
+        foreach(facultyCodes as $facultyCode){
+           $matchingStudentIds = $this->getLevelStudents($level, $facultyCode, $this->sex);
+           $this->randomize($matchingStudentIds);
+        }
+      }      
+      
+    }
+    
+    public function randomize($matchingStudentIds){
 
-      $students = $this->studentIds($this->sex);
+      // $students = $this->studentIds($this->sex);
       
       /*
         Loop through and for each student get all 
@@ -192,14 +208,6 @@
       return $this->getMatchingStudents($studentId);
     }
     
-    public function seqDriver(){
-      define("levels", [1.2, 2.1, 2.2, 4.1, 4.2]);
-      define("facultyCodes", ["AgriSciences", "Engineering", "Humanities"]);
-      
-      foreach($levels as $key => $level){
-        
-      }
-    }
     
     public function levelStudents($level, $facultyCode){
       return $this->getLevelStudents($level, $facultyCode, $this->sex);
