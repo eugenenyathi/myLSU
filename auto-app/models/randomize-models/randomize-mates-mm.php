@@ -10,8 +10,26 @@
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetch(PDO::FETCH_OBJ);
       
-      return $data ? $data->studentId : false;
+      return $data ? false : true;
     }
+    
+    public function hasRoomRequest($studentId){
+      $sql = " SELECT studentId FROM requestRoomMaleHostel WHERE studentId = '$studentId'; ";
+      $stmt = $this->connect()->query($sql);
+      $data = $stmt->fetch(PDO::FETCH_OBJ);
+      
+      return $data ? false : true;
+    }
+    
+    public function isFreeMateTwo($studentId){
+      $sql = " SELECT studentId, roomMateId FROM preferredRoomMatesMaleHostel
+               WHERE studentId = '$studentId' or roomMateId = '$studentId' ";
+      $stmt = $this->connect()->query($sql);
+      $data = $stmt->fetch(PDO::FETCH_OBJ);
+      
+      return $data ? false : true;
+    }
+    
     
     public function registerRequest($studentId){
       $sql = " INSERT INTO requestRoomMaleHostel(studentId) VALUES('$studentId'); ";

@@ -14,13 +14,16 @@
 
   //instatiating the allocate-room-contr class 
   $serveRoom = new AllocateRoomContr($studentsPerRoom);
-  $models = [ new AllocateRoomFM,  new AllocateRoomMM ];
+  $serveRoom->setAllocateRoomModel(new AllocateRoomFM);
+  $serveRoom->roomAllocDriver();
   
-  allocateRooms($models);
+  // $models = [ new AllocateRoomFM,  new AllocateRoomMM ];
+  
+  // allocateRooms($serveRoom, $models);
   exit("allocate-rooms successful.");
   
-  function allocateRooms($models){
-    foreach($model as $model){
+  function allocateRooms($serveRoom, $models){
+    foreach($models as $model){
       $serveRoom->setAllocateRoomModel($model);
       $serveRoom->roomAllocDriver();
     }

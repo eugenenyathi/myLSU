@@ -15,18 +15,18 @@
   
   
   function executionSeq(){
-    $gender = ['M'];
+    $gender = ['M', 'F'];
     
     foreach($gender as $singleSex){
       switch($singleSex){
         case 'M':
           $auto = new ResetContr(new ResetMM);
-          $auto->reset();
+          $auto->reset([2,3]);
           // $auto->showTables();
           break;
         case 'F':
           $auto = new ResetContr(new ResetFM);
-          $auto->reset();
+          $auto->reset([2,3]);
           // $auto->showTables();
           break;
         default:

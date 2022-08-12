@@ -17,9 +17,8 @@
   // $auto = new setRoommatesContr('M');
   // $auto->setUpLogin();
   
-  $user = new RandomizeMatesContr(new RandomizeMatesMM, 'M');
-  // $user->randomize();
-  $user->seqDriver();
+  $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
+  $user->randomize();
   
   // executionSeq();
   exit("set-roommates successful.");
@@ -34,25 +33,21 @@
           $auto = new setRoommatesContr('M');
           $auto->setUpLogin();
           // $auto->showTables();
-          echo "setUpLogin successful. -M";
           
           $user = new RandomizeMatesContr(new RandomizeMatesMM, 'M');
           $user->randomize();
           // $user->showTables();
           
-          echo "randomize successful. -M";
-          exit("exit!");
           break;
        case 'F':
           $auto = new setRoommatesContr('F');
           $auto->setUpLogin();
           // $auto->showTables();
-          echo "execution successful. -F";
-          exit("exit!");
         
-          // $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
-          // $user->randomize();
+          $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
+          $user->randomize();
           // $user->showTables();
+          
           break;
         default:
           exit("Gender-selection error");

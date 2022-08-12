@@ -59,7 +59,7 @@
         $this->auditRequests();
       }
       
-      echo "Successfully allocated rooms";
+      // echo "Successfully allocated rooms";
       
     }
     
@@ -94,7 +94,7 @@
             $this->grantRoom();
             
             /* Delete existing associations */
-            $this->deleteAssoc([ $this->requestStudentId ]);
+            // $this->deleteAssoc([ $this->requestStudentId ]);
           }
           
           /*
@@ -117,7 +117,7 @@
               /*Let's grant them a room*/
               $this->grantRoom();
               /* Delete existing associations */
-              $this->deleteAssoc([ $this->requestStudentId, $this->surrogateStudentId ]);
+              // $this->deleteAssoc([ $this->requestStudentId, $this->surrogateStudentId ]);
             } 
             
             /*
@@ -152,7 +152,7 @@
               $this->requestProcessed($this->setRequestStudentId, -1);
               
               /* Delete existing associations */
-              $this->deleteAssoc([ $this->singleConfirmationStudentId ]);
+              // $this->deleteAssoc([ $this->singleConfirmationStudentId ]);
             
             }
             
@@ -168,7 +168,7 @@
               */
               $this->surrogateStudentId = $this->set(2);
               /* surrogate student room-mate id */
-              $this->singleStudentId = $this->studentRoomMate($this->setRequestStudentId);
+              $this->singleStudentId = $this->studentRoomMates($this->setRequestStudentId);
               /* Get one room-mate of the surrogate student -- this returns an array with a the student id */
               $this->surrogateStudentRoomMate = $this->studentRoomMates($this->surrogateStudentId, 1);
               /* add this student to the student's room-mate who is short of one confirmation */
@@ -178,7 +178,7 @@
               
               $this->grantRoom();
               /* Delete existing association(s) */            
-              $this->deleteAssoc([ $this->requestStudentId, $this->singleStudentId]);
+              // $this->deleteAssoc([ $this->requestStudentId, $this->singleStudentId]);
               
               
             }
@@ -196,20 +196,22 @@
         elseif($this->countPositiveStatus($this->requestStudentId) == 1){
           echo "3 <br/>";
           /* Look for another set with only 1 confirmation. */
-          if( $this->setStatus($this->requestStudentId, $this->level)){
-            $this->setRequestStudentId = $this->setStatus($this->requestStudentId, $this->level);
+          if($this->setStatus($this->requestStudentId, $this->level)){
+            /*Extract the requesting student on the set that has one conifirmation*/
+            $sets = $this->setStatus($this->requestStudentId, $this->level);      
+            $this->setRequestStudentId = $this->getSetRequestStudentId($sets);
             /* Get the room-mate for this particular set */
             $this->setRequestRoomMates = $this->studentRoomMates($this->setRequestStudentId);
             /* Combine the single room-rates arrays to be one array */
             $this->roomMates = array_merge($this->roomMates, $this->setRequestRoomMates);
             /* Combine all those who made requests */
             $this->requestsStudents = [ $this->requestStudentId, $this->setRequestStudentId ];
-          
+            // $this->printArr($this->requestsStudents);
             /*Now let's grant them a room*/
             $this->grantRoom();
           
             /* Delete existing associations */
-            $this->deleteAssoc([ $this->requestStudentId, $this->setRequestStudentId ]);  
+            // $this->deleteAssoc([ $this->requestStudentId, $this->setRequestStudentId ]);  
           }
         
         }
@@ -218,12 +220,13 @@
           if the request has zero-confirmations.
         */
         
-        elseif($this->countPositiveStatus($this->requestStudentId) == 0){
+        elseif($this->countPositiveStatus($this->requestStudentId) === 0){
             echo "4 <br/>";
         
             /* 1. Check for a set that has 2 confirmations .*/
             
             if($this->set(2)){
+              echo "==== 4.1 ====";
         
               $this->setRequestStudentId = $this->set(2);
               /* Get the room-mates of this set */
@@ -242,6 +245,8 @@
             /* 2. Check for request that only has 1 confirmation */
             
             elseif($this->set(1)){
+              echo "==== 4.2 ====";
+              
               $this->setRequestStudentId = $this->set(1);
               $this->roomMates = $this->studentRoomMates($this->setRequestStudentId);
         
@@ -286,6 +291,7 @@
             /* 3. Else look for 2|3 students with zero confirmations  */
             
             else{
+              echo "==== 4.3 ====";
               /* First check for students with a -1 request marker */            
               while(true){
 
@@ -358,6 +364,19 @@
       
     }//--end of function
     
+    
+    private function getSetRequestStudentId($sets){
+    
+      foreach ($sets as $set) {
+        $studentId = $set->studentId;
+        $confirmStatus = $set->confirmStatus;
+                
+        if($confirmStatus === "1"){
+          return $studentId;
+        }
+      }
+      
+    }
     
     private function auditRequests(){
       $this->allRequests = $this->allocateRoomModel->getAllRequests($this->level);
@@ -517,12 +536,13 @@
       
       //granting the room-mates the room.
       foreach($this->roomMates as $student){
-        $this->allocateRoomModel->setGrantRoom($this->freeRoom(), $student->roomMateId);
-                
+        $this->allocateRoomModel->setGrantRoom($this->freeRoom(), $student->roomMateId);      
       } 
       
       //update that the room is now occupied.
-      $this->updateRoomStatus();
+      if($this->updateRoomStatus() === false){
+        exit("Error -updateRoomStatus");
+      }
           
     }
     
@@ -552,7 +572,15 @@
         }
 
       }//--end of loop
-    } //--end of of function  
+    } //--end of of function
+      
+    // private function getSetRequestStudentId($sets){
+    //   foreach ($sets as $set) {
+    //     if($set->confirmStatus === 1){
+    //       return $set->studentId;
+    //     }
+    //   }
+    // }
       
     private function setStatus($studentId, $level){
       return $this->allocateRoomModel->getSetStatus($studentId, $level);
@@ -567,7 +595,11 @@
         $this->allocateRoomModel->deleteRoomMates($studentId);
       }
     }
-  
+    
+    private function printArr($array){
+        print_r($array);
+        exit("Exit -- Arr");
+    }
   
     
   }//--end of class

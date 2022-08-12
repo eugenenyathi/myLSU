@@ -38,7 +38,7 @@
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetchAll(PDO::FETCH_OBJ);
       
-      return $data ? $data : false;
+      return $data ? $data : [];
     }
     
     public function getRoomMate($studentId){
@@ -87,9 +87,9 @@
     public function getSetStatus($studentId, $level){  
       $sql = "call spGetSetStatusMM('$studentId', $level)";
       $stmt = $this->connect()->query($sql);
-      $data = $stmt->fetch(PDO::FETCH_OBJ);
+      $data = $stmt->fetchAll(PDO::FETCH_OBJ);
       
-      return $data ? $data->studentId : false;
+      return $data ? $data : false;
     }
     
     public function getRoomMateConfirmStatus($studentId){

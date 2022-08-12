@@ -84,12 +84,12 @@
       return $data ? $data->studentId : false;
     }
     
-    public function getSetStatus($studentId, $level){  
+    public function getSetStatus($studentId, $level){ 
       $sql = "call spGetSetStatusFM('$studentId', $level)";
       $stmt = $this->connect()->query($sql);
-      $data = $stmt->fetch(PDO::FETCH_OBJ);
-      
-      return $data ? $data->studentId : false;
+      $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+    
+      return $data ? $data : false;
     }
     
     public function getRoomMateConfirmStatus($studentId){
@@ -159,7 +159,7 @@
     }
     
     public function getFreeRoom(){
-      $sql = "call spGetFreeRoomMM();";
+      $sql = "call spGetFreeRoomFM();";
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetch(PDO::FETCH_OBJ);
       
@@ -176,7 +176,7 @@
     }
     
     public function setRoomAvaiStatus($roomNumber){
-      $sql = " UPDATE roomAvailabityStatusFemaleHostel 
+      $sql = " UPDATE roomAvailabityStatusFemaleHostel
                SET roomStatus = 1 WHERE roomNumber = $roomNumber ;";
       $stmt = $this->connect()->query($sql);
                

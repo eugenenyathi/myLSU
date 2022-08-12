@@ -8,6 +8,8 @@
     private $allowedRoomMates;
     private $randomizeModel;
     private $sex; //the gender which we will be working with
+    private $levels = [1.2, 2.1, 2.2, 4.1, 4.2];
+    private $facultyCodes = ["AgricSciences", "Engineering", "Humanities"];
     
     public function __construct(RandomizeMatesInterface $randomizeModel, $sex){
       $this->allowedRoomMates = $this->getMaxNumOfMates() - 1;
@@ -15,87 +17,89 @@
       $this->sex = $sex;
     }
     
-    public function seqDriver(){
-      define("levels", [1.2, 2.1, 2.2, 4.1, 4.2]);
-      define("facultyCodes", ["AgriSciences", "Engineering", "Humanities"]);
+    public function randomize(){
+      /*
+        1. Get all students that of the same level and same faculty.
+        2. Get all students that are free agents.
+        3. call the requests function.
+      */
+
+      $students = [];
+      $count = 0;
       
-      $matchingStudentIds = [];
-      
-      foreach(levels as $key => $level){
-        // $matchingStudentIds = $this->getLevelStudents($level, facultyCodes[$key]);
-        foreach(facultyCodes as $facultyCode){
-           $matchingStudentIds = $this->getLevelStudents($level, $facultyCode, $this->sex);
-           $this->randomize($matchingStudentIds);
+      foreach($this->levels as $level){
+        foreach($this->facultyCodes as $facultyCode){
+          //step 1:
+          $students = $this->getLevelStudents($level, $facultyCode, $this->sex);
+
+          if(count($students) !== 0){
+            //step 2: 
+            $students = $this->freeMates($students);       
+            //step 3:  
+            $this->requests($students);            
+          }
+
         }
       }      
-      
     }
     
-    public function randomize($matchingStudentIds){
-
-      // $students = $this->studentIds($this->sex);
-      
-      /*
-        Loop through and for each student get all 
-        students that match the faculty & part
-      */    
-      $matchingStudentIds = [];
+    public function requests($students){
+              
       $selectedMates = [];
       
-      foreach($students as $student){
-        //this is the student that will make the request
-        $studentId = $student->studentId;
-        
-        //check if the current student has made a room request.
-        if($this->freeMate($studentId) === false){
-          //these are the students that fit the criteria of the current student
-          $matchingStudentIds = $this->matchingStudents($studentId);
-          $selectedMates = $this->selectMates($matchingStudentIds);
-          
-          /*
-           =>Now insert these roommates into the database
-           1. Insert into the requestRoom table
-           2. Insert into the preferred roommates table
-           3. Insert responses[confirmStatus] in the preferred roommates table
-           3. Insert into the requestsMaleHostel table
-           
-           */
-           
-           //Step 1:
-           $this->bookRequest($studentId);
-           //Step 2:
-           $this->bookRoomMates($studentId, $selectedMates);
-           //Step 3:
-           $this->bookResponses($selectedMates);
-           //Step 4:
-           $bookRequestsIds = $selectedMates;
-           $bookRequestsIds[] = $studentId;
-           $this->bookRequests($bookRequestsIds); 
-           
-           //update matchingStudentIds   
-          //$matchingStudentIds = $this->shiftStudents($matchingStudentIds, $selectedMates);      
-        }
-        
-        //$this->loopArr($this->randomizeModel->getPreferredRoomMates());
-        // exit();
-  
+      foreach($students as $studentId){
+        /*
+          1. Check if the current student is a free agent.
+          2. Select room mates for the current student in the loop 
+          3. Check if the selected room mates meet the required number
+      
+        */            
+          //Step 1:                                
+           if($this->hasRequest($studentId) && $this->freeMate($studentId)){
+             //Step 2:
+             $selectedMates = $this->selectMates($students, $studentId);
+             // Step 3:
+             if(count($selectedMates) === $this->allowedRoomMates){
+             
+               /*
+                =>Now insert these roommates into the database
+                1. Insert into the requestRoom table
+                2. Insert into the preferred roommates table
+                3. Insert responses[confirmStatus] in the preferred roommates table
+                4. Insert into the requestsMaleHostel table             
+                */
+             
+               //Step 1:
+               if($this->bookRequest($studentId) === false){
+                 exit("bookRequest -Error");
+               }
+                //Step 2:
+               if($this->bookRoomMates($studentId, $selectedMates) === false){
+                 exit("bookRoomMates -Error");
+               }
+                //Step 3:
+               $this->bookResponses($selectedMates);
+               //Step 4:
+               $setOfRoomMates = array_merge($selectedMates, [$studentId]);
+               $this->bookRequests($setOfRoomMates); 
+
+             } 
+           }
       }
       
-      // $this->printArr($selectedMates);
     }
     
     //remove selected students from the array of matching students
-    public function shiftStudents($matchingStudentIds, $selectedMates){
-      $newMatchingStudentIds = [];
+    public function shiftStudents($students, $selectedMates){
+      $newStudents = [];
       
-      foreach($matchingStudentIds as $student){
-        $studentId = $student->studentId;
+      foreach($students as $studentId){
         if(in_array($studentId, $selectedMates) === false){
-          $newMatchingStudentIds[] = $studentId;
+          $newStudents[] = $studentId;
         }
       }
       
-      return $newMatchingStudentIds;
+      return $newStudents;
     }
     
     public function bookResponses($selectedMates){
@@ -130,30 +134,39 @@
     
     public function setResponse($selectedMates, $pickedResponse){
       $studentsThatConfirm = [];
-      
+          
       if($pickedResponse !== 0){
         for($i = 0; $i < $pickedResponse; $i++){
           $studentsThatConfirm[] = $selectedMates[$i];
         }
       }
       
+      // echo "pickedResponse => ${pickedResponse}";
       // $this->printArr($studentsThatConfirm);
       
       foreach($selectedMates as $studentId){
-        if(in_array($studentId, $studentsThatConfirm)){
-          // echo "1";
-          $this->randomizeModel->registerResponses($studentId, 1);  
+        
+        if(count($studentsThatConfirm) !== 0){
+          if(in_array($studentId, $studentsThatConfirm)){
+            // echo "1";
+            $this->randomizeModel->registerResponses($studentId, 1);  
+          }else{
+            // echo "2";
+            $this->randomizeModel->registerResponses($studentId, -1);  
+          }          
         }else{
-          // echo "2";
           $this->randomizeModel->registerResponses($studentId, -1);  
         }
+
       }
       
     }
     
-    public function bookRequests($students){
-      foreach($students as $studentId){
-        $this->randomizeModel->registerRequests($studentId);
+    public function bookRequests($setOfRoomMates){
+      foreach($setOfRoomMates as $studentId){
+        if($this->randomizeModel->registerRequests($studentId) === false){
+          exit("bookRequests --Error! --${studentId} ");
+        }
       }
     }
     
@@ -167,33 +180,46 @@
       return $this->randomizeModel->registerRequest($studentId);
     }
     
-    public function selectMates($matchingStudentIds){
-      /*
-        => Get 3 potential students
-        1. Randomize selection 
-        2. Take note of the available number of matching students
-        3. Check if selected potential student is not already selected
-      */
+    public function selectMates($students, $requestStudentId){
       $potentialMates = [];
-      
-      while(true){
-          //step 1.
-          $potentialMate = $matchingStudentIds[$this->randomNumber($matchingStudentIds)];
-          //step 3.
-          if($this->freeMate($potentialMate->studentId) === false){
-            //eliminates posibility of duplicate student id's
-            if(in_array($potentialMate->studentId, $potentialMates) === false){
-              $potentialMates[] = $potentialMate->studentId;  
-            }
-          }
+    
+      foreach($students as $studentId){
           
-          if(count($potentialMates) === $this->allowedRoomMates){
+        if(count($potentialMates) !== $this->allowedRoomMates){
+          if($studentId !== $requestStudentId && $this->freeMate($studentId)){
+              $potentialMates[] = $studentId;
+          }    
+        }else{
             break;
-          } 
+        }
+        
       }
       
+            
       return $potentialMates;
     }
+    
+    public function hasRequest($studentId){
+      return $this->randomizeModel->hasRoomRequest($studentId);
+    }  
+    
+    public function freeMates($students){
+      $freeMates = [];
+      
+      foreach($students as $student){
+        $studentId = $student->studentId;
+        
+        if($this->freeMate($studentId)){
+          $freeMates[] = $studentId;
+        }
+      }
+      
+      return $freeMates;
+    }
+    
+    public function freeMateTwo($studentId){
+      return $this->randomizeModel->isFreeMateTwo($studentId);
+    }  
     
     public function freeMate($studentId){
       return $this->randomizeModel->isFreeMate($studentId);
@@ -232,7 +258,7 @@
     
     public function printArr($array){
         print_r($array);
-        exit("5000");
+        exit("Exit -- Arr");
     }
     
   }//endofclass

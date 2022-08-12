@@ -28,7 +28,7 @@
       return $data ? $data : [];
     }
     
-    protected function getLevelStudents($level, $facultyCode){
+    protected function getLevelStudents($level, $facultyCode, $sex){
       $sql = " call spGetLevelStudents($level, '$facultyCode', '$sex') ";
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetchAll(PDO::FETCH_OBJ);

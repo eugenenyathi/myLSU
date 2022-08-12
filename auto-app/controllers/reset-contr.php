@@ -10,13 +10,33 @@
       $this->resetModel = $resetModel;
     }
     
-    public function reset(){
-      $this->studentLogInDetails();
-      $this->studentLogInTimeStamps();
-      $this->requestsTable();
-      $this->requestRoomTable();
-      $this->preferredRoomMates();
-      
+    public function reset($reqs){
+      foreach ($reqs as $req) {
+        switch($req){
+          case 0:
+            $this->studentLogInDetails();
+            $this->studentLogInTimeStamps();
+            $this->requestsTable();
+            $this->requestRoomTable();
+            $this->preferredRoomMates();
+            break;
+          case 1:
+            $this->studentLogInDetails();
+            $this->studentLogInTimeStamps();
+            break;
+          case 2:
+            $this->requestsTable();
+            $this->requestRoomTable();
+            $this->preferredRoomMates();
+            break;
+          case 3:
+            $this->roomOccupiersTable();
+            $this->roomAvailabityStatusTable();
+          case 4:
+            $this->requestsTableTwo();
+            $this->requestRoomTableTwo();
+        }// code...
+      }      
     }
     
     public function showTables(){
@@ -39,6 +59,22 @@
     
     public function showPreferredRoomMates(){
       return $this->resetModel->getPreferredRoomMates();
+    }
+    
+    public function roomAvailabityStatusTable(){
+      return $this->resetModel->resetRoomAvailabityStatus();
+    }
+    
+    public function roomOccupiersTable(){
+      return $this->resetModel->resetRoomOccupiersTable();
+    }
+    
+    public function requestsTableTwo(){
+      return $this->resetModel->resetRequestsTableTwo();
+    }
+    
+    public function requestRoomTableTwo(){
+      return $this->resetModel->resetRequestRoomTableTwo();
     }
     
     public function requestsTable(){
