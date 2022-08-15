@@ -605,9 +605,13 @@
       foreach($this->requests_data as $student){
         $setRequestStudentNo = $student->studentId;
         
-        if($setRequestStudentNo != $this->requestStudentId){
-          if($this->countPositiveStatus($setRequestStudentNo) == $numberOfConfirmations){
-            return $setRequestStudentNo;
+        if($setRequestStudentNo !== $this->requestStudentId && $this->freeMate($setRequestStudentNo)){
+          if($this->countPositiveStatus($setRequestStudentNo) === $numberOfConfirmations){
+            //get the room-mates and verify if they are free
+            $roomMates = $this->studentRoomMates($setRequestStudentNo);
+            $roomMates = $this->freeMates($roomMates);
+            
+            if(count($roomMates) === $numberOfConfirmations) return $setRequestStudentNo;
           }
         }
 
