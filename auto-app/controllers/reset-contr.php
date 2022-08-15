@@ -19,6 +19,8 @@
             $this->requestsTable();
             $this->requestRoomTable();
             $this->preferredRoomMates();
+            $this->roomOccupiersTable();
+            $this->roomAvailabityStatusTable();
             break;
           case 1:
             $this->studentLogInDetails();

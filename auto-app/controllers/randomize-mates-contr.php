@@ -10,6 +10,7 @@
     private $sex; //the gender which we will be working with
     private $levels = [1.2, 2.1, 2.2, 4.1, 4.2];
     private $facultyCodes = ["AgricSciences", "Engineering", "Humanities"];
+    private $countIndex = 0;
     
     public function __construct(RandomizeMatesInterface $randomizeModel, $sex){
       $this->allowedRoomMates = $this->getMaxNumOfMates() - 1;
@@ -103,35 +104,36 @@
     }
     
     public function bookResponses($selectedMates){
-      $this->randomizeResponses($selectedMates);
-    }
-    
-    public function randomizeResponses($selectedMates){
-      $responses = [ 0, 1, 2, 3 ];
-      //will get a random number
-      $random = $this->randomNumber($responses);
+      $responses = [ 1, 2, 3 ];
+      //pass the count index to make sure its not out of index.
+      $this->countIndex = $this->boundIndex($this->countIndex, count($responses));
       //pick the number of students that will make a positive confirmation status
-      $pickedResponse = $responses[$random];
+      $pickedResponse = $responses[$this->countIndex];
+      $this->setResponse($selectedMates, $pickedResponse);
       
-      switch($pickedResponse){
-        case 0:
-          $this->setResponse($selectedMates, 0);
-          break;
-        case 1:
-          $this->setResponse($selectedMates, 1);
-          break;
-        case 2:
-          $this->setResponse($selectedMates, 2);
-          break;
-        case 3:
-          $this->setResponse($selectedMates, 3);
-          break;
-        default:
-          break;
-      }
+      $this->countIndex++;
     }
     
+    public function boundIndex($countIndex, $arrLength){
+      if($countIndex > $arrLength - 1){
+        return 0;
+      }
+      if($countIndex < 0){
+        return $arrLength - 1;
+      }
+      
+      return $countIndex;
+    }
     
+    // public function bookResponses($selectedMates){
+    //   $responses = [ 0, 1, 2, 3 ];
+    //   //will get a random number
+    //   $random = $this->randomNumber($responses);
+    //   //pick the number of students that will make a positive confirmation status
+    //   $pickedResponse = $responses[$random];
+    //   $this->setResponse($selectedMates, $pickedResponse);
+    // }
+        
     public function setResponse($selectedMates, $pickedResponse){
       $studentsThatConfirm = [];
           

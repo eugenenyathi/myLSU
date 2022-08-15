@@ -17,10 +17,10 @@
   // $auto = new setRoommatesContr('M');
   // $auto->setUpLogin();
   
-  $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
-  $user->randomize();
+  // $user = new RandomizeMatesContr(new RandomizeMatesFM, 'F');
+  // $user->randomize();
   
-  // executionSeq();
+  executionSeq();
   exit("set-roommates successful.");
   
   

@@ -9,7 +9,7 @@
     public function deleteRoomMates($requestStudentId);
     public function getAuditRequestMarker($studentId);
     public function getStudentRoomAllocStatus($studentId);
-    public function setStudentRoomAllocStatus($studentId);
+    public function setStudentRoomAllocStatus($studentId, $marker);
     public function getCountRoomOccupants($roomNo);
     public function getAuditRooms();
     public function setNewRoomOccupant($roomNo, $studentId);

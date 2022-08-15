@@ -57,7 +57,7 @@
     }
     
     public function deleteRoomMates($studentId){
-      $sql = " DELETE from preferredRoomMatesMaleHostel 
+      $sql = " DELETE FROM preferredRoomMatesMaleHostel 
                WHERE studentId = '$studentId' OR roomMateId = '$studentId' ;
             ";
       $stmt = $this->connect()->query($sql);
@@ -105,7 +105,7 @@
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetch(PDO::FETCH_OBJ);
       
-      return $data ? $data->marker : false;
+      return $data ? true : false;
     }
     
     public function getStudentRoomAllocStatus($studentId){
@@ -116,8 +116,8 @@
       return $data ? true : false;
     }
     
-    public function setStudentRoomAllocStatus($studentId){
-      $sql = " UPDATE requestsMaleHostel SET marker = 1 WHERE studentId = '$studentId'; ";
+    public function setStudentRoomAllocStatus($studentId, $marker){
+      $sql = " UPDATE requestsMaleHostel SET marker = $marker WHERE studentId = '$studentId'; ";
       $stmt = $this->connect()->query($sql);
       
       return $stmt ? true : false;

@@ -13,13 +13,14 @@
     }
     
     public function getAllRequests($level){
-      $sql = " SELECT rmh.studentId FROM requestsFemaleHostel rmh 
-               JOIN studentProgramme sp ON rmh.studentId = sp.studentId 
+      $sql = " SELECT rfh.studentId FROM requestsFemaleHostel rfh 
+               JOIN studentProgramme sp ON rfh.studentId = sp.studentId 
                WHERE sp.part = $level ;
             ";
       $stmt = $this->connect()->query($sql);
+      $data = $stmt->fetchAll(PDO::FETCH_OBJ);
       
-      return $stmt->fetchAll(PDO::FETCH_OBJ);
+      return $data ? $data : false; 
     }
     
     public function getRequestProcessMarker($studentId){
@@ -57,7 +58,7 @@
     }
     
     public function deleteRoomMates($studentId){
-      $sql = " DELETE from preferredRoomMatesFemaleHostel 
+      $sql = " DELETE FROM preferredRoomMatesFemaleHostel 
                WHERE studentId = '$studentId' OR roomMateId = '$studentId' ;
             ";
       $stmt = $this->connect()->query($sql);
@@ -105,7 +106,7 @@
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetch(PDO::FETCH_OBJ);
       
-      return $data ? $data->marker : false;
+      return $data ? true : false;
     }
     
     public function getStudentRoomAllocStatus($studentId){
@@ -116,8 +117,9 @@
       return $data ? true : false;
     }
     
-    public function setStudentRoomAllocStatus($studentId){
-      $sql = " UPDATE requestsFemaleHostel SET marker = 1 WHERE studentId = '$studentId'; ";
+    
+    public function setStudentRoomAllocStatus($studentId, $marker){
+      $sql = " UPDATE requestsFemaleHostel SET marker = $marker WHERE studentId = '$studentId'; ";
       $stmt = $this->connect()->query($sql);
       
       return $stmt ? true : false;

@@ -21,12 +21,12 @@
       switch($singleSex){
         case 'M':
           $auto = new ResetContr(new ResetMM);
-          $auto->reset([2,3]);
+          $auto->reset([0]);
           // $auto->showTables();
           break;
         case 'F':
           $auto = new ResetContr(new ResetFM);
-          $auto->reset([2,3]);
+          $auto->reset([0]);
           // $auto->showTables();
           break;
         default:

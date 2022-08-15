@@ -14,12 +14,12 @@
 
   //instatiating the allocate-room-contr class 
   $serveRoom = new AllocateRoomContr($studentsPerRoom);
-  $serveRoom->setAllocateRoomModel(new AllocateRoomFM);
-  $serveRoom->roomAllocDriver();
+  // $serveRoom->setAllocateRoomModel(new AllocateRoomFM);
+  // $serveRoom->roomAllocDriver();
   
-  // $models = [ new AllocateRoomFM,  new AllocateRoomMM ];
+  $models = [ new AllocateRoomFM,  new AllocateRoomMM ];
   
-  // allocateRooms($serveRoom, $models);
+  allocateRooms($serveRoom, $models);
   exit("allocate-rooms successful.");
   
   function allocateRooms($serveRoom, $models){
