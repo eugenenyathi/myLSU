@@ -600,26 +600,20 @@
       }
     }
     
+    
     private function set($numberOfConfirmations){
       foreach($this->requests_data as $student){
         $setRequestStudentNo = $student->studentId;
         
-        if($setRequestStudentNo !== $this->requestStudentId && $this->freeMate($setRequestStudentNo)){
-          if($this->countPositiveStatus($setRequestStudentNo) === $numberOfConfirmations){
+        if($setRequestStudentNo != $this->requestStudentId){
+          if($this->countPositiveStatus($setRequestStudentNo) == $numberOfConfirmations){
             return $setRequestStudentNo;
-            
-            $singleConfirmationStudentId = $this->studentRoomMateId($this->setRequestStudentId);
-            
-            if($this->free($singleConfirmationStudentId)){
-              //return the object-version of this studentId 
-              return $this->objectRoomMateId(  $setRequestStudentNo);
-            }
-            
           }
         }
 
       }//--end of loop
     } //--end of of function
+
 
     private function setStatus($studentId, $level){
       return $this->allocateRoomModel->getSetStatus($studentId, $level);
