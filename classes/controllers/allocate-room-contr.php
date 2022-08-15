@@ -72,19 +72,29 @@
     
     private function processRequests(){
       foreach($this->requests_data as $student){
-        /* Get the student id & check if the request has been processed. */
-        $this->requestStudentId = $student->studentId;
-        $requestMarker = $this->requestProcessMarker($this->requestStudentId);
-        $roomAllocMarker = $this->confirmStudentRoomAllocation($this->requestStudentId);
+        /* 
+          Get the student id 
+          -- check if the request has been processed. 
+          -- check if the student has not been allocated a room in 
+          * This double lock is too ensure no single individual gets 
+          allocated more than one.
+        */
         
-        if($requestMarker === 0 && $roomAllocDriver === 0){
+        $this->requestStudentId = $student->studentId;
+        $requestStatus = $this->requestProcessMarker($this->requestStudentId);
+        $isFreeMate = $this->freeMate($this->requestStudentId);
+        
+        if($requestStatus === 0 && $isFreeMate){
 
           /*
-            getting the room-mates with a positive confirmation status
-            of the student who made the room-request
+            1. Get students with a positive comfirm status 
+            2. Check if those students haven't be allocated a room.
           */
           
+          //Step 1:
           $this->roomMates = $this->studentRoomMates($this->requestStudentId);
+          //Step 2:
+          $this->roomMates = $this->freeMates($this->roomMates);
           
           /*
             if everyone confirmed positively 
@@ -92,14 +102,12 @@
             -- StudentsPerRoom 3 : 2 people  confirmed + you  => 3
           */
           
-          if($this->countPositiveStatus($this->requestStudentId) == $this->maxNoOfRoomMates){
+          if(count($this->roomMates) === $this->maxNoOfRoomMates){
             // echo "1 <br/>";
             /* granting them a room! */
             $this->requestsStudents = [ $this->requestStudentId ];
             $this->grantRoom();
-            
-            /* Delete existing associations */
-            $this->deleteAssoc([ $this->requestStudentId ]);
+
           }
           
           /*
@@ -108,7 +116,7 @@
             -- StudentsPerRoom 3 : 1 person confirmed + you  => 2: 1 missing to make 3
           */
           
-          elseif($this->countPositiveStatus($this->requestStudentId) == $this->minConfirmStatus){
+          elseif(count($this->roomMates) === $this->minConfirmStatus){
             // echo "2 <br/>";
             /*
               check if there are any requests with zero-confirmation
@@ -121,8 +129,6 @@
               $this->requestsStudents = [ $this->requestStudentId, $this->surrogateStudentId ];
               /*Let's grant them a room*/
               $this->grantRoom();
-              /* Delete existing associations */
-              $this->deleteAssoc([ $this->requestStudentId, $this->surrogateStudentId ]);
             } 
             
             /*
@@ -156,9 +162,6 @@
               
               $this->requestProcessed($this->setRequestStudentId, -1);
               
-              /* Delete existing associations */
-              $this->deleteAssoc([ $this->singleConfirmationStudentId ]);
-            
             }
             
             /*
@@ -198,7 +201,7 @@
             -- StudentsPerRoom 3 : not available in this instance
           */
           
-        elseif($this->countPositiveStatus($this->requestStudentId) == 1){
+        elseif($this->countPositiveStatus($this->requestStudentId) === 1){
           // echo "3 <br/>";
           /* Look for another set with only 1 confirmation. */
           if($this->setStatus($this->requestStudentId, $this->level)){
@@ -451,6 +454,10 @@
       return $this->allocateRoomModel->getRoomMate($studentId);
     }
     
+    private function objectRoomMateId($studentId){
+      return $this->allocateRoomModel->getObjectRoomMate($studentId);
+    }
+    
     private function countPositiveStatus($studentId){
       return $this->allocateRoomModel->getCountPositiveStatus($studentId);
     }
@@ -460,6 +467,24 @@
     }
     private function confirmStudentRoomAllocation($studentId){
       return $this->allocateRoomModel->getStudentRoomAllocStatus($studentId);
+    }
+    
+    private function freeMates($roomMates){
+      $freeMates = [];
+      
+      foreach($roomMates as $roomMate){
+        $roomMateId = $roomMate->roomMateId;
+        
+        if($this->freeMate($roomMateId)){
+          $freeMates[] = $roomMate;
+        }
+      }
+      
+      return $freeMates;
+    }
+    
+    private function freeMate($studentId){
+      return $this->allocateRoomModel->isFreeMate($studentId);
     }
     
     private function studentRoomAllocStatus($studentId, $marker){
@@ -491,13 +516,17 @@
     private function negativeStatus(){
       foreach($this->requests_data as $student){
         //getting the id of the student that made the initial room request
-        $this->surrogateStudentId = $student->studentId;
-        $returnValue = $this->allocateRoomModel->getNegativeStatus($this->surrogateStudentId);
+        $surrogateStudentId = $student->studentId;
         
-        //if the current student has totally zero confirmation
-        //3 / 2 zeros
-        if($returnValue == $this->maxNoOfRoomMates){
-          return $this->surrogateStudentId;
+        //check if the current student has not been already been given a room
+        if($this->freeMate($surrogateStudentId)){
+          $return = $this->allocateRoomModel->getNegativeStatus($surrogateStudentId);
+          
+          //if the current student has totally zero confirmation
+          //3 / 2 zeros
+          if($return === $this->maxNoOfRoomMates){
+            return $surrogateStudentId;
+          }  
         }
         
       }
@@ -575,9 +604,17 @@
       foreach($this->requests_data as $student){
         $setRequestStudentNo = $student->studentId;
         
-        if($setRequestStudentNo != $this->requestStudentId){
-          if($this->countPositiveStatus($setRequestStudentNo) == $numberOfConfirmations){
+        if($setRequestStudentNo !== $this->requestStudentId && $this->freeMate($setRequestStudentNo)){
+          if($this->countPositiveStatus($setRequestStudentNo) === $numberOfConfirmations){
             return $setRequestStudentNo;
+            
+            $singleConfirmationStudentId = $this->studentRoomMateId($this->setRequestStudentId);
+            
+            if($this->free($singleConfirmationStudentId)){
+              //return the object-version of this studentId 
+              return $this->objectRoomMateId(  $setRequestStudentNo);
+            }
+            
           }
         }
 
