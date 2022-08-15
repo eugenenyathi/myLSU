@@ -186,7 +186,7 @@
               
               $this->grantRoom();
               /* Delete existing association(s) */            
-              $this->deleteAssoc([ $this->requestStudentId, $this->singleStudentId]);
+              // $this->deleteAssoc([ $this->requestStudentId, $this->singleStudentId]);
               
               
             }
@@ -201,7 +201,7 @@
             -- StudentsPerRoom 3 : not available in this instance
           */
           
-        elseif($this->countPositiveStatus($this->requestStudentId) === 1){
+        elseif(count($this->roomMates) === 1){
           // echo "3 <br/>";
           /* Look for another set with only 1 confirmation. */
           if($this->setStatus($this->requestStudentId, $this->level)){
@@ -218,8 +218,8 @@
             /*Now let's grant them a room*/
             $this->grantRoom();
           
-            /* Delete existing associations */
-            $this->deleteAssoc([ $this->requestStudentId, $this->setRequestStudentId ]);  
+            // /* Delete existing associations */
+            // $this->deleteAssoc([ $this->requestStudentId, $this->setRequestStudentId ]);  
           }
         
         }
@@ -228,7 +228,7 @@
           if the request has zero-confirmations.
         */
         
-        elseif($this->countPositiveStatus($this->requestStudentId) === 0){
+        elseif(count($this->roomMates) === 0){
             // echo "4 <br/>";
         
             /* 1. Check for a set that has 2 confirmations .*/
@@ -245,8 +245,8 @@
               /*Now let's grant them a room*/
               $this->grantRoom();
         
-              /* Delete existing associations */
-              $this->deleteAssoc([ $this->requestStudentId, $this->setRequestStudentId ]);
+              // /* Delete existing associations */
+              // $this->deleteAssoc([ $this->requestStudentId, $this->setRequestStudentId ]);
         
             }
         
@@ -270,9 +270,9 @@
                 $this->grantRoom();
         
                 /* Delete existing associations */
-                $this->deleteAssoc(
-                [ $this->requestStudentId, $this->setRequestStudentId, $this->surrogateStudentId ]
-                );
+                // $this->deleteAssoc(
+                // [ $this->requestStudentId, $this->setRequestStudentId, $this->surrogateStudentId ]
+                // );
         
               }
         
@@ -288,9 +288,9 @@
                 $this->grantRoom();
         
                 /* Delete existing associations */
-                $this->deleteAssoc(
-                [ $this->requestStudentId, $this->setRequestStudentId, $this->surrogateStudentId ]
-                );
+                // $this->deleteAssoc(
+                // [ $this->requestStudentId, $this->setRequestStudentId, $this->surrogateStudentId ]
+                // );
         
               }
         
@@ -327,7 +327,7 @@
               if($this->roomMatesNo == 0){
                 /* Grant them a room */
                 $this->grantRoom();
-                $this->deleteAssoc($this->surrogateRoomMates);
+                // $this->deleteAssoc($this->surrogateRoomMates);
                 
               }else{
                 // echo 'Do we all get here!';
@@ -340,10 +340,10 @@
                   $this->requestsStudents = array_merge($this->requestsStudents, $this->surrogateRoomMates, $this->otherMates);
 
                   /*  check the number of roommates in the requestsStudents in the array */
-                  if(count($this->requestsStudents) == ($this->maxNoOfRoomMates + 1) ){
+                  if(count($this->requestsStudents) === ($this->maxNoOfRoomMates + 1) ){
                     /* grant them a room */
                     $this->grantRoom();
-                    $this->deleteAssoc($this->requestsStudents);
+                    // $this->deleteAssoc($this->requestsStudents);
                     
                   }else{
                     /* Update the database*/
