@@ -50,6 +50,15 @@
       return $data->roomMateId;
     }
     
+    public function getObjectRoomMate($studentId){
+      $sql = " SELECT roomMateId FROM preferredRoomMatesMaleHostel 
+               WHERE studentId = '$studentId' AND confirmStatus = 1 ;";
+      $stmt = $this->connect()->query($sql);
+      $data = $stmt->fetch(PDO::FETCH_OBJ);
+    
+      return $data;
+    }
+    
     public function deleteRoomMate($studentId){
       $sql = " DELETE from preferredRoomMatesMaleHostel WHERE roomMateId = '$studentId'; ";
       $stmt = $this->connect()->query($sql);
@@ -114,6 +123,14 @@
       $data = $stmt->fetch(PDO::FETCH_OBJ);
       
       return $data ? true : false;
+    }
+    
+    public function isFreeMate($studentId){
+      $sql = " SELECT studentId FROM roomOccupiersMaleHostel WHERE studentId = '$studentId'; ";
+      $stmt = $this->connect()->query($sql);
+      $data = $stmt->fetch(PDO::FETCH_OBJ);
+      
+      return $data ? false : true;
     }
     
     public function setStudentRoomAllocStatus($studentId, $marker){

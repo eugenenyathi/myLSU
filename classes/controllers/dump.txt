@@ -1,0 +1,22 @@
+private function set($numberOfConfirmations){
+  foreach($this->requests_data as $student){
+    $setRequestStudentNo = $student->studentId;
+    
+    if($setRequestStudentNo !== $this->requestStudentId && $this->freeMate($setRequestStudentNo)){
+      if($this->countPositiveStatus($setRequestStudentNo) === $numberOfConfirmations){
+                    
+        $singleConfirmationStudentId = $this->studentRoomMateId($this->setRequestStudentId);
+        
+        if($this->free($singleConfirmationStudentId)){
+          // $this->setRequestStudentId = $setRequestStudentNo;
+          //return the object-version of this studentId 
+          return [ $setRequestStudentNo, $this->objectRoomMateId($setRequestStudentNo) ];
+        }
+        
+      }
+    }
+
+  }//--end of loop
+} //--end of of function
+
+              [$this->setRequestStudentId, $this->singleConfirmationStudentId ] = $this->set(1);

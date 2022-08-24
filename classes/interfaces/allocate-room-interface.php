@@ -6,9 +6,11 @@
     public function getRequestProcessMarker($studentId);
     public function getRoomMates($requestStudentId, $limit);
     public function getRoomMate($requestStudentId);
+    public function getObjectRoomMate($studentId);
     public function deleteRoomMates($requestStudentId);
     public function getAuditRequestMarker($studentId);
     public function getStudentRoomAllocStatus($studentId);
+    public function isFreeMate($studentId);
     public function setStudentRoomAllocStatus($studentId, $marker);
     public function getCountRoomOccupants($roomNo);
     public function getAuditRooms();

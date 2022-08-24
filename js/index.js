@@ -27,12 +27,12 @@ const form = document.querySelector("form");
 studentNumber.addEventListener("input", (ev) => {
   ev.target.classList.remove("shake");
   ev.target.value = ev.target.value.toUpperCase();
-  ev.target.style.border = "2px solid var(--focus-blue)";
+  ev.target.style.border = "2px solid #5887ef";
 });
 // Changing the red to focus blue for the password
 password.addEventListener("input", (ev) => {
   ev.target.classList.remove("shake");
-  password.style.border = "2px solid var(--focus-blue)";
+  password.style.border = "2px solid #5887ef";
 });
 
 // Configuring the password view element
@@ -41,11 +41,11 @@ const eyes = document.querySelectorAll(".eye-icon");
 
 eyes.forEach((eye) => {
   eye.addEventListener("click", (ev) => {
-    if(password.type == "password"){
+    if (password.type == "password") {
       password.setAttribute("type", "text");
       eyes[0].style.display = "none";
       eyes[1].style.display = "block";
-    }else if(password.type =="text"){
+    } else if (password.type == "text") {
       password.setAttribute("type", "password");
       eyes[0].style.display = "block";
       eyes[1].style.display = "none";
@@ -66,7 +66,7 @@ form.addEventListener("submit", (ev) => {
   if (!studentNumberValue || studentNumberValue.length < 8) {
     studentNumber.style.border = "2px solid red";
     studentNumber.classList.add("shake");
-    console.log("student-number")
+    console.log("student-number");
   }
   // else if (!stNoRegex.test(studentNumberValue)){
   //   studentNumber.style.border = "2px solid red";
@@ -75,88 +75,76 @@ form.addEventListener("submit", (ev) => {
   else if (!passwordValue || passwordValue.length < 8) {
     password.style.border = "2px solid red";
     password.classList.add("shake");
-    console.log("password")
+    console.log("password");
   } else {
     //Sending data for database confirmation
     const loginDetails = {
       studentId: studentNumberValue,
-      password: passwordValue
-    }
+      password: passwordValue,
+    };
 
-    const url = './includes/login.inc.php';
+    const url = "./includes/login.inc.php";
     // const errorMsg = document.querySelector('.error-msg');
 
     fetch(url, {
-      method : "POST",
-      headers: { "Content-type": "application/json"},
-      body: JSON.stringify(loginDetails)
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(loginDetails),
     })
-    .then((res) => res.text())
-    .then((res) => errorHandler(res));
+      .then((res) => res.text())
+      .then((res) => errorHandler(res));
   }
 });
 
-function errorHandler(res){
-  if(res == '800EF'){
+function errorHandler(res) {
+  if (res == "800EF") {
     shakeTargets();
     console.log(res);
-  }
-  else if(res == '990'){
+  } else if (res == "990") {
     studentNumber.style.border = "2px solid red";
     studentNumber.classList.add("shake");
     console.log(res);
-  }
-  else if(res == '992'){
+  } else if (res == "992") {
     password.style.border = "2px solid red";
     password.classList.add("shake");
     console.log(res);
-  }
-  else if(res == '2000'){
+  } else if (res == "2000") {
     studentNumber.style.border = "2px solid red";
     studentNumber.classList.add("shake");
     console.log(res);
-  }
-  else if(res == '2002'){
+  } else if (res == "2002") {
     password.style.border = "2px solid red";
     password.classList.add("shake");
     console.log(res);
-  }
-  else if(res == "3000"){
+  } else if (res == "3000") {
     studentNumber.style.border = "2px solid red";
     studentNumber.classList.add("shake");
     console.log(res);
-  }
-  else if(res == "3001"){
+  } else if (res == "3001") {
     password.style.border = "2px solid red";
     password.classList.add("shake");
     console.log(res);
-  }
-  else if(res == "3002"){
+  } else if (res == "3002") {
     password.style.border = "2px solid red";
     password.classList.add("shake");
     console.log(res);
-  }
-  else if(res == "4000"){
+  } else if (res == "4000") {
     studentNumber.style.border = "2px solid red";
     studentNumber.classList.add("shake");
     console.log(res);
-  }
-  else if(res == '5000'){
+  } else if (res == "5000") {
     window.location.href = "./home.php";
     console.log(res);
-  }
-  else if(res == '5001'){
+  } else if (res == "5001") {
     console.log(res);
-  }
-  else if(res == "10000"){
+  } else if (res == "10000") {
     console.log("Db-error");
-  }
-  else{
+  } else {
     console.log(res);
   }
 }
 
-function shakeTargets(){
+function shakeTargets() {
   studentNumber.style.border = "2px solid red";
   studentNumber.classList.add("shake");
   password.style.border = "2px solid red";
