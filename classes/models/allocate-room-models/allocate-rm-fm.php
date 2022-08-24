@@ -127,7 +127,7 @@
     }
     
     public function isFreeMate($studentId){
-      $sql = " SELECT student FROM roomOccupiersFemaleHostel WHERE studentId = '$studentId'; ";
+      $sql = " SELECT studentId FROM roomOccupiersFemaleHostel WHERE studentId = '$studentId'; ";
       $stmt = $this->connect()->query($sql);
       $data = $stmt->fetch(PDO::FETCH_OBJ);
       

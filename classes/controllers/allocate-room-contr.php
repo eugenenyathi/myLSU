@@ -54,16 +54,11 @@
     private function requests(){
       $this->requests_data = $this->allocateRoomModel->getRequests($this->level);
       
-      $this->auditRequests();
-    
-      /*
-      if(count($this->requests_data) !== 0){
-        // $this->processRequests();
-        // $this->auditRequests();
-      }*/
-      
-      // echo "Successfully allocated rooms";
-      
+      if(count($this->requests_data)){
+        $this->processRequests();
+        $this->auditRequests();
+      }
+      // echo "Successfully allocated rooms";  
     }
     
     public function refreshRequestsIndex(){
@@ -81,6 +76,9 @@
         */
         
         $this->requestStudentId = $student->studentId;
+        
+        // exit($this->requestStudentId);
+                
         $requestStatus = $this->requestProcessMarker($this->requestStudentId);
         $isFreeMate = $this->freeMate($this->requestStudentId);
         
@@ -392,45 +390,47 @@
         1. Check if the current student has been allocated a room.
         2. If not - allocate room 
       */
-            
-      foreach($this->allRequests as $student){
-    
-        $requestStudentId = $student->studentId;
-        $what = $this->auditRequestMarker($requestStudentId);
-        $confirm = $this->confirmStudentRoomAllocation($requestStudentId);
+      
+      if(count($this->allRequests)){
         
-        if($this->auditRequestMarker($requestStudentId)){
-          if($this->confirmStudentRoomAllocation($requestStudentId) === false){
-            // echo "1 -audit";
-            /*Check if there is room that has students less than the required number */
-            if($this->roomOccupants()){
-              // echo "audit - 1.1";
-              $roomNo = $this->roomOccupants();
-              /* Add the student to the room */
-              $this->addNewRoomOccupant($roomNo, $requestStudentId);
-              /*Update room allocation status */
-              $this->studentRoomAllocStatus($requestStudentId, 1);
-            }else{
-              // echo "audit - 1.2";
-              /* Get new room */
-              $roomNo = $this->freeRoom();
-              /* Add the student to the new room */
-              $this->addNewRoomOccupant($roomNo, $requestStudentId);
-              /* Update room availability */
-              $this->updateRoomStatus();
+        foreach($this->allRequests as $student){
+          $requestStudentId = $student->studentId;
+          $what = $this->auditRequestMarker($requestStudentId);
+          $confirm = $this->confirmStudentRoomAllocation($requestStudentId);
+        
+          if($this->auditRequestMarker($requestStudentId)){
+            if($this->confirmStudentRoomAllocation($requestStudentId) === false){
+              // echo "1 -audit";
+              /*Check if there is room that has students less than the required number */
+              if($this->roomOccupants()){
+                // echo "audit - 1.1";
+                $roomNo = $this->roomOccupants();
+                /* Add the student to the room */
+                $this->addNewRoomOccupant($roomNo, $requestStudentId);
+                /*Update room allocation status */
+                $this->studentRoomAllocStatus($requestStudentId, 1);
+              }else{
+                // echo "audit - 1.2";
+                /* Get new room */
+                $roomNo = $this->freeRoom();
+                /* Add the student to the new room */
+                $this->addNewRoomOccupant($roomNo, $requestStudentId);
+                /* Update room availability */
+                $this->updateRoomStatus();
+                /*Update room allocation status */
+                $this->studentRoomAllocStatus($requestStudentId, 1);
+              }
+            }else if($this->confirmStudentRoomAllocation($requestStudentId)){
               /*Update room allocation status */
               $this->studentRoomAllocStatus($requestStudentId, 1);
             }
-          }else if($this->confirmStudentRoomAllocation($requestStudentId)){
-            /*Update room allocation status */
-            $this->studentRoomAllocStatus($requestStudentId, 1);
+        
           }
         
+        
         }
-      
-      
+        // echo "Successfully allocated rooms -audit";        
       }
-      // echo "Successfully allocated rooms -audit";
     }
     
     

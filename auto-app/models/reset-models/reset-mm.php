@@ -19,7 +19,7 @@
     }
     
     public function resetRequestsTableTwo(){
-      $sql = " UPDATE requetsMaleHostel SET marker = 0;";
+      $sql = " UPDATE requestsMaleHostel SET marker = 0;";
       $stmt = $this->connect()->query($sql);        
 
       return $stmt ? true : false;
