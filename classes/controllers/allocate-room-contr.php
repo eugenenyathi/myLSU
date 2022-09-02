@@ -5,6 +5,7 @@
   class AllocateRoomContr{
     
     private $allocateRoomModel;
+    private $levels = [ 1.2 , 2.1 , 2.2 , 4.1 , 4.2 ];
     private $level;
     public $requests_data = [];
     private $allRequests = [];
@@ -42,10 +43,8 @@
     }
     
     public function roomAllocDriver(){
-      define("levels", [ 1.2 , 2.1 , 2.2 , 4.1 , 4.2 ]);
-      
       for($i = 0; $i < count(levels); $i++){
-        $this->level = levels[$i];
+        $this->level = $this->levels[$i];
         $this->requests();
       }
       

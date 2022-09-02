@@ -14,9 +14,7 @@
 
   //instatiating the allocate-room-contr class 
   $serveRoom = new AllocateRoomContr($studentsPerRoom);
-  // $serveRoom->setAllocateRoomModel(new AllocateRoomFM);
-  // $serveRoom->roomAllocDriver();
-  
+
   $models = [ new AllocateRoomFM,  new AllocateRoomMM ];
   
   allocateRooms($serveRoom, $models);
