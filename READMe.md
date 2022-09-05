@@ -70,6 +70,7 @@ It is a system that is designed to allow students to pick their desired friends 
 
 ## Db connection
 
+- the db & its stored procedures live in the /classes/db directory
 - database connection files live in the /classes/db directory and use pdo.
 
 ---
